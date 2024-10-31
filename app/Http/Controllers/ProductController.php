@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
+
 
 class ProductController extends Controller
 {
@@ -92,7 +95,7 @@ class ProductController extends Controller
             'success' => true,
             'message' => 'Product retrieved successfully',
             'data' => $product
-        ],200);
+        ], 200);
     }
 
     /**
@@ -165,6 +168,58 @@ class ProductController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Product deleted successfully'
+        ], 200);
+    }
+
+    public function searchbyName(Request $request)
+    {
+        // Mengambil query pencarian dari parameter request
+        $query = $request->input('product_name');
+        // $query = "mobil";
+
+        // Mencari produk yang sesuai dengan nama menggunakan Query Builder
+        $products = DB::table('products')
+            ->where('product_name', 'LIKE', '%' . $query . '%')
+            ->get();
+
+        // Cek jika produk tidak ditemukan
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Products retrieved successfully',
+            'data' => $products
+        ], 200);
+    }
+
+    public function searchByCategory(Request $request)
+    {
+        // Mengambil query pencarian dari parameter request
+        $query = $request->input('category');
+        // $query = "mobil";
+
+        // Mencari produk yang sesuai dengan nama menggunakan Query Builder
+        $products = DB::table('products')
+            ->where('category', 'LIKE', '%' . $query . '%')
+            ->get();
+
+        // Cek jika produk tidak ditemukan
+        if ($products->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'category not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Products with category retrieved successfully',
+            'data' => $products
         ], 200);
     }
 }

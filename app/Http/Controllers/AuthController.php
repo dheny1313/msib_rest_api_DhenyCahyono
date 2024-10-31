@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,10 +12,10 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:5',
         ]);
 
         if ($validator->fails()) {
@@ -41,7 +42,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
@@ -72,7 +73,12 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // add logic delete user token
-        // then return response json with success true
+
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'success' => "true",
+            'message' => 'logout success'
+        ], 200);
     }
 }
