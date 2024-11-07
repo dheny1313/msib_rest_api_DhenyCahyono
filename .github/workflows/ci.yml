@@ -1,0 +1,28 @@
+name: belajar ci dengan github action
+on:
+  push:
+    branches: ["develop"]
+  pull_request:
+    branches: ["devlop"]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: shivammathur/setup-php@12
+        with:
+          php-version: "8.3"
+      - uses: actions/checkout@v4
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Generate key
+        run: php artisan key:generate
+      - name: set up Database
+        run: |
+          php -r "file_exists('database/db.sqlite') || touch('database/db.sqlite');"
+          php artisan migratte
+      - name: excute test
+        run: php artisan test
