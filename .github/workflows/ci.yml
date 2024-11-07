@@ -20,7 +20,7 @@ jobs:
         run: composer install --no-interaction --prefer-dist
       - name: Generate key
         run: php artisan key:generate
-      - name: set up Database
+      - name: set up Database kok ra iso
         run: |
           php -r "file_exists('database/db.sqlite') || touch('database/db.sqlite');"
           php artisan migrate
