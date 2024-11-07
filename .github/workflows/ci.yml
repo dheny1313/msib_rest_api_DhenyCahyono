@@ -1,12 +1,12 @@
 name: belajar ci dengan github action
 on:
   push:
-    branches: ["develop"]
+    branches: ["devlop"]
   pull_request:
     branches: ["devlop"]
 
 jobs:
-  laravel-tests:
+  build:
     runs-on: ubuntu-latest
 
     steps:
