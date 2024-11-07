@@ -23,6 +23,6 @@ jobs:
       - name: set up Database
         run: |
           php -r "file_exists('database/db.sqlite') || touch('database/db.sqlite');"
-          php artisan migratte
+          php artisan migrate
       - name: excute test
         run: php artisan test
