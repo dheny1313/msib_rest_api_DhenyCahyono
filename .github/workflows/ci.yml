@@ -1,9 +1,9 @@
 name: belajar ci dengan github action
 on:
   push:
-    branches: ["devlop"]
+    branches: ["develop"]
   pull_request:
-    branches: ["devlop"]
+    branches: ["develop"]
 
 jobs:
   build:
@@ -27,9 +27,11 @@ jobs:
       - name: Generate Application Key
         run: php artisan key:generate
 
-      - name: Setup Database
+      - name: Setup SQLite Database
         run: |
           php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=/github/workspace/database/database.sqlite" >> .env
           php artisan migrate
 
       - name: Execute Tests
