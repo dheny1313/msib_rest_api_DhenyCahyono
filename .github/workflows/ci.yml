@@ -29,7 +29,7 @@ jobs:
 
       - name: Setup Database
         run: |
-          php -r "file_exists('database/db.sqlite') || touch('database/db.sqlite');"
+          php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
           php artisan migrate
 
       - name: Execute Tests
