@@ -27,10 +27,10 @@ jobs:
       - name: Generate Application Key
         run: php artisan key:generate
 
-      - name: Setup SQLite Database
-        run: |
-          php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
-          php artisan migrate
+      #   - name: Setup SQLite Database
+      #     run: |
+      #       php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
+      #       php artisan migrate
 
       - name: Execute Tests
         run: php artisan test
